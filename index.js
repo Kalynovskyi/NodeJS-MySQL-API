@@ -5,6 +5,7 @@ import customersRoutes from './routes/customers.js';
 import employeesRoutes from './routes/employees.js';
 import categoriesRoutes from './routes/categories.js';
 import ordersRoutes from './routes/orders.js';
+import ordersDetailsRoutes from './routes/order_details.js';
 
 const app = express();
 const PORT = 5050;
@@ -18,6 +19,8 @@ app.use('/employees', employeesRoutes);
 app.use('/categories', categoriesRoutes);
 
 app.use('/orders', ordersRoutes);
+
+app.use('/orders_details', ordersDetailsRoutes);
 
 app.get('/', (req, res) => {res.send('Hello from Homepage')});
 

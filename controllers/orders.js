@@ -25,7 +25,7 @@ export const createOrder = async (req, res) => {
         try {
             const result = await connection.promise().query(ordersSqlQuery);
             await connection.promise().query(orderDetailsSqlQuery);
-            
+
             res.send(`Order with ${result[0].insertId} was added to the database!`);
         } catch (error) {
             res.send(error);
@@ -85,7 +85,7 @@ export const updateOrder = async (req, res) => {
                         WHERE OrderID = ${id};
                     `
     try {
-        const result = await connection.promise().query(sqlQuery);
+        await connection.promise().query(sqlQuery);
         res.send(`Order with the id ${id} has been updated`);
     } catch (error) {
         res.send(error);
