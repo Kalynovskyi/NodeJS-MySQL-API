@@ -9,28 +9,38 @@ export const getOrders = async (req, res) => {
 
 export const createOrder = async (req, res) => {
 
-    const { customerId, employeeId, shipperId } = req.body;
+    const { customerId, employeeId, shipperId, productId, quantity } = req.body;
 
-    if ( customerId && employeeId && shipperId ) {
+    if ( customerId && employeeId && shipperId && productId && quantity) {
 
-        const sqlQuery = `
+        const ordersSqlQuery = `
                             INSERT INTO Orders (CustomerID, EmployeeID, OrderDate, ShipperID)
                             VALUES (${customerId}, ${employeeId}, NOW(), ${shipperId});
-                        `
+                        `;
+        const orderDetailsSqlQuery = `
+                        INSERT INTO OrderDetails (OrderID, ProductID, Quantity)
+                        VALUES (LAST_INSERT_ID(), ${productId}, ${quantity});
+                    `;
+        
         try {
-            await connection.promise().query(sqlQuery);
-
-            res.send(`Order was added to the database!`);
+            const result = await connection.promise().query(ordersSqlQuery);
+            await connection.promise().query(orderDetailsSqlQuery);
+            
+            res.send(`Order with ${result[0].insertId} was added to the database!`);
         } catch (error) {
             res.send(error);
         } 
     } else {
-        res.send(`Please input Order details. As example: 
-                    {
-                        "customerId": "1",
-                        "employeeId": "1",
-                        "shipperId": "1"
-                    }`
+        res.send(`
+                    Please input Order details. As example: 
+                        {
+                            "customerId": "1",
+                            "employeeId": "1",
+                            "shipperId": "1",
+                            "productId": "1",
+                            "quantity": "1"
+                        }
+                `
         );
     }
 }
@@ -75,7 +85,7 @@ export const updateOrder = async (req, res) => {
                         WHERE OrderID = ${id};
                     `
     try {
-        await connection.promise().query(sqlQuery);
+        const result = await connection.promise().query(sqlQuery);
         res.send(`Order with the id ${id} has been updated`);
     } catch (error) {
         res.send(error);
