@@ -59,6 +59,9 @@ export const removeOrder = (req, res) => {
     const {id} = req.params;
 
     connection.promise().query(
+        `DELETE FROM OrderDetails WHERE OrderID = ${id};`
+    );
+    connection.promise().query(
         `DELETE FROM Orders WHERE OrderID = ${id};`
     );
 
