@@ -26,7 +26,7 @@ export const createOrder = async (req, res) => {
             const result = await connection.promise().query(ordersSqlQuery);
             await connection.promise().query(orderDetailsSqlQuery);
 
-            res.send(`Order with ${result[0].insertId} was added to the database!`);
+            res.send(`Order with ID ${result[0].insertId} was added to the database!`);
         } catch (error) {
             res.send(error);
         } 
