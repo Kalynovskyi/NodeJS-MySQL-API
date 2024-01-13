@@ -8,6 +8,7 @@ import ordersRoutes from './routes/orders.js';
 import ordersDetailsRoutes from './routes/order_details.js';
 import productsRoutes from './routes/products.js';
 import shippersRoutes from './routes/shippers.js';
+import suppliersRoutes from './routes/suppliers.js';
 
 const app = express();
 const PORT = 5050;
@@ -27,6 +28,8 @@ app.use('/orders_details', ordersDetailsRoutes);
 app.use('/products', productsRoutes);
 
 app.use('/shippers', shippersRoutes);
+
+app.use('/suppliers', suppliersRoutes);
 
 app.get('/', (req, res) => {res.send('Hello from Homepage')});
 
